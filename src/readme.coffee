@@ -4,6 +4,8 @@ path = require 'path'
 fs = require 'fs'
 slugify = require 'slugify'
 
+trim = (str) -> str.replace /^\s+|\s+$/g, ''
+
 class Readme
   read: fibrous (@readmePath) ->
     content = fs.sync.readFile @readmePath, 'utf8'
@@ -26,7 +28,7 @@ class Readme
   set: (block, content) ->
     throw new Error "`#{block}` not found in #{@readmePath}".red unless @data[block]
     lines = @data[block].split /\n/g
-    content = content.replace /^\s+|\s+$/g, ''
+    content = trim content
     @data[block] = lines[0] + '\n\n' + content + '\n\n'
 
   save: fibrous ->
@@ -38,6 +40,6 @@ class Readme
     for block in @blocks
       result += @data[block]
 
-    result
+    trim result
 
 module.exports = {Readme}

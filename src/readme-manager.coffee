@@ -32,6 +32,10 @@ processModule = fibrous (packagePath) ->
 
   try
     console.log packageJson.name.blue
+
+    if packageJson.author?.name isnt 'Alex Gorbatchev'
+      return console.log '  not mine, skipping'.green
+
     readmePath = "#{dir}/README.md"
     processReadme.sync readmePath
   catch e
